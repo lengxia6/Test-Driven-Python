@@ -19,7 +19,7 @@ from django.conf.urls import url
 from lists import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # url(r'^$',views.home_page,name='home'),
+    # path('admin/', admin.site.urls),
+    url(r'^$',views.home_page,name='home'),
 
 ]
