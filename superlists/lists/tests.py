@@ -3,7 +3,6 @@ from django.test import TestCase
 # Create your tests here.
 
 from django.urls import resolve
-from django.test import TestCase
 # from .views import home_page
 from django.http import HttpRequest
 
@@ -21,8 +20,11 @@ from django.http import HttpRequest
 #         self.assertIn('<title>To-Do lists</title>',html)
 #         self.assertTrue(html.endswitch('</html>'))
 
+class SmokeTest(TestCase):
 
+    def test_bad_maths(self):
 
+        self.assertEqual(1+1,3)
 
 
 
