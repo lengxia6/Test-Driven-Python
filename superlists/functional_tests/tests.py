@@ -88,7 +88,7 @@ class NewVisitorTest(LiveServerTestCase):
         # 弗朗西斯访问首页
         # 页面中看不到伊迪丝的清单
         self.browser.get(self.live_server_url)
-        page_text = self.browser.find_element_by_id('body').text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('购买孔雀毛',page_text)
         self.assertNotIn('飞翔',page_text)
 
@@ -104,7 +104,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotEqual(francis_list_url,edith_list_url)
 
         # 这个页面还是没有伊迪丝的清单
-        page_text = self.browser.find_element_by_id('body').text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('购买孔雀毛',page_text)
         self.assertIn('买牛奶',page_text)
 
