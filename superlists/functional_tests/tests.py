@@ -3,15 +3,17 @@ from selenium.webdriver.common.keys import Keys
 import time
 import unittest
 from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.common.exceptions import WebDriverException
 
 MAX_WAIT = 10
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
 
     def tearDown(self):
+        self.browser.refresh()
         self.browser.quit()
 
     def wait_for_row_in_list_table(self, row_text):
@@ -48,18 +50,18 @@ class NewVisitorTest(LiveServerTestCase):
         )
 
 
-        inputbox.send_keys('Buy peacock feathers')
+        inputbox.send_keys('购买孔雀毛')
 
         inputbox.send_keys(Keys.ENTER)
 
-        self.wait_for_row_in_list_table('1: Buy peacock feathers')
+        self.wait_for_row_in_list_table('1:购买孔雀毛')
 
         inputbox = self.browser.find_element_by_id('id_new_item')
-        inputbox.send_keys('Use peacock feathers to make a fly')
+        inputbox.send_keys('使用孔雀毛做蝇拍')
         inputbox.send_keys(Keys.ENTER)
 
-        self.wait_for_row_in_list_table('2: Use peacock feathers to make a fly')
-        self.wait_for_row_in_list_table('1: Buy peacock feathers')
+        self.wait_for_row_in_list_table('2:使用孔雀毛做蝇拍')
+        self.wait_for_row_in_list_table('1:购买孔雀毛')
 
 
         # self.fail('Finish the test!')
@@ -71,11 +73,11 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('购买孔雀毛')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: 购买孔雀毛')
+        self.wait_for_row_in_list_table('1:购买孔雀毛')
 
         # 伊迪丝清单的唯一url
         edith_list_url = self.browser.current_url
-        print('&&&',edith_list_url)
+        print('***',edith_list_url)
         self.assertRegex(edith_list_url, '/lists/.+')
 
 
@@ -96,7 +98,7 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('买牛奶')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: 买牛奶')
+        self.wait_for_row_in_list_table('1:买牛奶')
 
         # 弗朗西斯获得他的唯一URL
         francis_list_url = self.browser.current_url
@@ -107,6 +109,27 @@ class NewVisitorTest(LiveServerTestCase):
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('购买孔雀毛',page_text)
         self.assertIn('买牛奶',page_text)
+
+
+    def test_layout_and_styling(self):
+
+        # 伊迪丝访问主页
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024,768)
+
+        # 她看到输入框完美的居中显示
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x']+inputbox.size['width']/2,
+            512,
+            # delta=10
+
+        )
+
+
+
+
+
 
 
 
